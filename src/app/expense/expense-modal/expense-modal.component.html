@@ -1,1 +1,59 @@
-Expense Modal
+<ion-header>
+  <ion-toolbar>
+    <ion-button slot="start" fill="clear" (click)="cancel()">
+      <ion-icon name="close" />
+      <span>CANCEL</span>
+    </ion-button>
+    <ion-title>{{ getTitle() }}</ion-title>
+    <ion-button slot="end" fill="clear" (click)="save()">
+      <ion-icon name="save" />
+      <span>SAVE</span>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <!-- Name Field -->
+    <ion-item>
+      <ion-icon slot="start" name="text" />
+      <ion-label position="stacked">Name</ion-label>
+      <ion-input [(ngModel)]="name" placeholder="Enter name" />
+    </ion-item>
+
+    <!-- Category Field -->
+    <ion-item button="true" (click)="showCategoryModal()">
+      <ion-icon slot="start" name="pricetag" />
+      <ion-label position="stacked">Category</ion-label>
+      <ion-input [(ngModel)]="categoryName" placeholder="Select category" readonly />
+      <ion-icon slot="end" name="chevron-down" />
+      <ion-button slot="end" fill="clear" (click)="showCategoryModal(); $event.stopPropagation()">
+        <ion-icon name="add" />
+      </ion-button>
+    </ion-item>
+
+    <!-- Amount Field -->
+    <ion-item>
+      <ion-icon slot="start" name="cash" />
+      <ion-label position="stacked">Amount</ion-label>
+      <ion-input type="number" [(ngModel)]="amount" placeholder="Enter amount" />
+      <ion-label slot="end">CHF</ion-label>
+    </ion-item>
+
+    <!-- Date Field -->
+    <ion-item button="true">
+      <ion-icon slot="start" name="calendar" />
+      <ion-label position="stacked">Date</ion-label>
+      <ion-label>{{ formatDate(date) }}</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <!-- Delete Button (only for edit mode) -->
+  @if (expense) {
+    <div class="delete-container">
+      <ion-button fill="clear" color="danger" (click)="delete()">
+        <ion-icon name="trash" />
+      </ion-button>
+    </div>
+  }
+</ion-content>

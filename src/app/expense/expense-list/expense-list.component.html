@@ -1,1 +1,75 @@
-Expense List
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Expenses</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Filter/Sort Bar -->
+  <div class="filter-bar">
+    <ion-button fill="clear" class="filter-button">
+      <ion-icon slot="start" name="swap-vertical" />
+      <span>Date (newest first)</span>
+      <ion-icon slot="end" name="chevron-down" />
+    </ion-button>
+    <ion-button fill="clear" class="filter-button">
+      <ion-icon slot="start" name="pricetag" />
+      <span>Category</span>
+      <ion-icon slot="end" name="chevron-down" />
+    </ion-button>
+    <ion-searchbar placeholder="Search" class="search-bar" />
+  </div>
+
+  <!-- Expense List -->
+  <ion-list>
+    @for (group of getExpensesByDate(); track group.date) {
+      <ion-list-header>
+        <ion-label>{{ formatDate(group.date) }}</ion-label>
+      </ion-list-header>
+      @for (expense of group.expenses; track expense.id) {
+        <ion-item button="true" (click)="openEditExpenseModal(expense)">
+          <ion-label>
+            <h2>{{ expense.name }}</h2>
+          </ion-label>
+          @if (expense.category) {
+            <div slot="end" class="expense-end">
+              <ion-label class="category-label">
+                <ion-icon name="pricetag" />
+                <span>{{ expense.category.name }}</span>
+              </ion-label>
+              <ion-label class="amount-label">
+                {{ formatAmount(expense.amount) }}
+              </ion-label>
+              <ion-icon name="chevron-forward" />
+            </div>
+          } @else {
+            <div slot="end" class="expense-end">
+              <ion-label class="amount-label">
+                {{ formatAmount(expense.amount) }}
+              </ion-label>
+              <ion-icon name="chevron-forward" />
+            </div>
+          }
+        </ion-item>
+      }
+    }
+  </ion-list>
+
+  <!-- FAB Button -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="openAddExpenseModal()">
+      <ion-icon name="add" />
+    </ion-fab-button>
+  </ion-fab>
+
+  <!-- Bottom Navigation Bar -->
+  <div class="bottom-nav">
+    <ion-button fill="clear" (click)="addMonths(-1)">
+      <ion-icon name="arrow-back" />
+    </ion-button>
+    <span class="month-year">{{ getMonthYear() }}</span>
+    <ion-button fill="clear" (click)="addMonths(1)">
+      <ion-icon name="arrow-forward" />
+    </ion-button>
+  </div>
+</ion-content>

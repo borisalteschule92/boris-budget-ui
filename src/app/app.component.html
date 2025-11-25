@@ -6,6 +6,8 @@
         <ion-list id="menu-list">
           <ion-list-header>
             <ion-label>Budget UI</ion-label>
+            <ion-icon slot="end" name="settings" />
+            <ion-icon slot="end" name="grid" />
           </ion-list-header>
 
           @for (page of appPages; track page.title; let i = $index) {
@@ -23,6 +25,12 @@
               </ion-item>
             </ion-menu-toggle>
           }
+
+          <ion-item lines="none" button="true" class="logout-item">
+            <ion-icon slot="start" name="log-out" />
+            <ion-label>LOGOUT</ion-label>
+            <ion-icon slot="end" name="arrow-forward" />
+          </ion-item>
         </ion-list>
       </ion-content>
     </ion-menu>

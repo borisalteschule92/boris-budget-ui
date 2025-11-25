@@ -1,0 +1,49 @@
+ion-header ion-toolbar {
+  --min-height: 56px;
+}
+
+ion-header ion-button {
+  --color: var(--ion-text-color);
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0;
+}
+
+ion-header ion-button ion-icon {
+  margin-right: 4px;
+}
+
+ion-item {
+  --padding-start: 16px;
+  --padding-end: 16px;
+}
+
+ion-item ion-icon[slot="start"] {
+  margin-right: 16px;
+  font-size: 20px;
+  color: var(--ion-color-medium);
+}
+
+ion-item ion-label[position="stacked"] {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ion-color-medium);
+  margin-bottom: 8px;
+}
+
+ion-item ion-input {
+  --padding-start: 0;
+  --padding-end: 0;
+}
+
+.delete-container {
+  display: flex;
+  justify-content: center;
+  padding: 24px;
+}
+
+.delete-container ion-button {
+  --color: var(--ion-color-danger);
+}
+
