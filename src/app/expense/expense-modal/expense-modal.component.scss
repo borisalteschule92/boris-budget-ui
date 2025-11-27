@@ -47,3 +47,22 @@ ion-item ion-input {
   --color: var(--ion-color-danger);
 }
 
+.required {
+  color: var(--ion-color-danger);
+}
+
+.error-message {
+  font-size: 12px;
+  padding-left: 16px;
+  padding-top: 4px;
+}
+
+ion-item ion-select {
+  width: 100%;
+}
+
+ion-datetime-button {
+  --background: transparent;
+  --color: var(--ion-text-color);
+}
+

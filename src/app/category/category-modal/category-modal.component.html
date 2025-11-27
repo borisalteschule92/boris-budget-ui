@@ -1,1 +1,79 @@
-Category Modal
+<ion-header>
+  <ion-toolbar>
+    <ion-button slot="start" fill="clear" (click)="cancel()" [disabled]="isLoading">
+      <ion-icon name="close" />
+      <span>CANCEL</span>
+    </ion-button>
+    <ion-title>{{ getTitle() }}</ion-title>
+    <ion-button slot="end" fill="clear" (click)="save()" [disabled]="isLoading || categoryForm.invalid">
+      @if (isLoading) {
+        <ion-spinner name="crescent" />
+      } @else {
+        <ion-icon name="save" />
+      }
+      <span>SAVE</span>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="categoryForm" (ngSubmit)="save()">
+    <ion-list>
+      <!-- Name Field -->
+      <ion-item>
+        <ion-icon slot="start" name="text" />
+        <ion-label position="stacked">Name <span class="required">*</span></ion-label>
+        <ion-input
+          formControlName="name"
+          placeholder="Enter category name"
+          [disabled]="isLoading"
+          type="text"
+        />
+      </ion-item>
+      @if (nameControl?.invalid && nameControl?.touched) {
+        <ion-item lines="none">
+          <ion-label color="danger" class="error-message">
+            Name is required
+          </ion-label>
+        </ion-item>
+      }
+    </ion-list>
+
+    <!-- Color Selection Section -->
+    <div class="color-section">
+      <ion-item lines="none">
+        <ion-icon slot="start" name="brush" />
+        <ion-label position="stacked">Color</ion-label>
+      </ion-item>
+      <div class="color-picker-container">
+        <div class="color-picker">
+          @for (color of availableColors; track color) {
+            <button
+              type="button"
+              class="color-option"
+              [class.selected]="categoryForm.get('color')?.value === color"
+              [style.background-color]="color"
+              (click)="selectColor(color)"
+              [disabled]="isLoading"
+              [attr.aria-label]="'Select color ' + color"
+            ></button>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete Button (only for edit mode) -->
+    @if (category) {
+      <div class="delete-container">
+        <ion-button fill="clear" color="danger" (click)="delete()" [disabled]="isLoading">
+          @if (isLoading) {
+            <ion-spinner name="crescent" />
+          } @else {
+            <ion-icon name="trash" />
+          }
+          <span>DELETE</span>
+        </ion-button>
+      </div>
+    }
+  </form>
+</ion-content>

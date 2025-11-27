@@ -1,59 +1,122 @@
 <ion-header>
   <ion-toolbar>
-    <ion-button slot="start" fill="clear" (click)="cancel()">
+    <ion-button slot="start" fill="clear" (click)="cancel()" [disabled]="isLoading">
       <ion-icon name="close" />
       <span>CANCEL</span>
     </ion-button>
     <ion-title>{{ getTitle() }}</ion-title>
-    <ion-button slot="end" fill="clear" (click)="save()">
-      <ion-icon name="save" />
+    <ion-button slot="end" fill="clear" (click)="save()" [disabled]="isLoading || expenseForm.invalid">
+      @if (isLoading) {
+        <ion-spinner name="crescent" />
+      } @else {
+        <ion-icon name="save" />
+      }
       <span>SAVE</span>
     </ion-button>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <!-- Name Field -->
-    <ion-item>
-      <ion-icon slot="start" name="text" />
-      <ion-label position="stacked">Name</ion-label>
-      <ion-input [(ngModel)]="name" placeholder="Enter name" />
-    </ion-item>
+  <form [formGroup]="expenseForm" (ngSubmit)="save()">
+    <ion-list>
+      <!-- Name Field -->
+      <ion-item>
+        <ion-icon slot="start" name="text" />
+        <ion-label position="stacked">Name <span class="required">*</span></ion-label>
+        <ion-input
+          #nameInput
+          formControlName="name"
+          placeholder="Enter name"
+          [disabled]="isLoading"
+          type="text"
+        />
+      </ion-item>
+      @if (nameControl?.invalid && nameControl?.touched) {
+        <ion-item lines="none">
+          <ion-label color="danger" class="error-message">
+            Name is required
+          </ion-label>
+        </ion-item>
+      }
 
-    <!-- Category Field -->
-    <ion-item button="true" (click)="showCategoryModal()">
-      <ion-icon slot="start" name="pricetag" />
-      <ion-label position="stacked">Category</ion-label>
-      <ion-input [(ngModel)]="categoryName" placeholder="Select category" readonly />
-      <ion-icon slot="end" name="chevron-down" />
-      <ion-button slot="end" fill="clear" (click)="showCategoryModal(); $event.stopPropagation()">
-        <ion-icon name="add" />
-      </ion-button>
-    </ion-item>
+      <!-- Category Field -->
+      <ion-item>
+        <ion-icon slot="start" name="pricetag" />
+        <ion-label position="stacked">Category</ion-label>
+        <ion-select
+          formControlName="categoryId"
+          [disabled]="isLoading"
+          placeholder="Select category"
+          (ionChange)="onCategoryChange($event)"
+        >
+          <ion-select-option [value]="null">None</ion-select-option>
+          @for (category of categories; track category.id) {
+            <ion-select-option [value]="category.id">{{ category.name }}</ion-select-option>
+          }
+        </ion-select>
+        <ion-button slot="end" fill="clear" (click)="showCategoryModal(); $event.stopPropagation()" [disabled]="isLoading">
+          <ion-icon name="add" />
+        </ion-button>
+      </ion-item>
 
-    <!-- Amount Field -->
-    <ion-item>
-      <ion-icon slot="start" name="cash" />
-      <ion-label position="stacked">Amount</ion-label>
-      <ion-input type="number" [(ngModel)]="amount" placeholder="Enter amount" />
-      <ion-label slot="end">CHF</ion-label>
-    </ion-item>
+      <!-- Amount Field -->
+      <ion-item>
+        <ion-icon slot="start" name="cash" />
+        <ion-label position="stacked">Amount <span class="required">*</span></ion-label>
+        <ion-input
+          formControlName="amount"
+          placeholder="Enter amount"
+          [disabled]="isLoading"
+          type="number"
+          step="0.01"
+          min="0.01"
+        />
+        <ion-label slot="end">CHF</ion-label>
+      </ion-item>
+      @if (amountControl?.invalid && amountControl?.touched) {
+        <ion-item lines="none">
+          <ion-label color="danger" class="error-message">
+            @if (amountControl?.errors?.['required']) {
+              Amount is required
+            } @else if (amountControl?.errors?.['min']) {
+              Amount must be greater than 0
+            }
+          </ion-label>
+        </ion-item>
+      }
 
-    <!-- Date Field -->
-    <ion-item button="true">
-      <ion-icon slot="start" name="calendar" />
-      <ion-label position="stacked">Date</ion-label>
-      <ion-label>{{ formatDate(date) }}</ion-label>
-    </ion-item>
-  </ion-list>
+      <!-- Date Field -->
+      <ion-item>
+        <ion-icon slot="start" name="calendar" />
+        <ion-label position="stacked">Date <span class="required">*</span></ion-label>
+        <ion-input
+          formControlName="date"
+          [disabled]="isLoading"
+          type="date"
+          [max]="maxDate"
+        />
+      </ion-item>
+      @if (dateControl?.invalid && dateControl?.touched) {
+        <ion-item lines="none">
+          <ion-label color="danger" class="error-message">
+            Date is required
+          </ion-label>
+        </ion-item>
+      }
+    </ion-list>
 
-  <!-- Delete Button (only for edit mode) -->
-  @if (expense) {
-    <div class="delete-container">
-      <ion-button fill="clear" color="danger" (click)="delete()">
-        <ion-icon name="trash" />
-      </ion-button>
-    </div>
-  }
+    <!-- Delete Button (only for edit mode) -->
+    @if (expense) {
+      <div class="delete-container">
+        <ion-button fill="clear" color="danger" (click)="delete()" [disabled]="isLoading">
+          @if (isLoading) {
+            <ion-spinner name="crescent" />
+          } @else {
+            <ion-icon name="trash" />
+          }
+          <span>DELETE</span>
+        </ion-button>
+      </div>
+    }
+  </form>
 </ion-content>

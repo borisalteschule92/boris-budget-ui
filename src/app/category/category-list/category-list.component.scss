@@ -25,43 +25,6 @@
   padding: 0;
 }
 
-.expense-end {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.category-label {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  color: var(--ion-color-medium);
-  font-size: 14px;
-}
-
-.amount-label {
-  font-weight: 500;
-  margin-right: 4px;
-}
-
-.bottom-nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px;
-  background: var(--ion-background-color);
-  border-top: 1px solid var(--ion-color-step-150);
-  position: sticky;
-  bottom: 0;
-  z-index: 10;
-}
-
-.month-year {
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--ion-text-color);
-}
-
 .empty-state {
   display: flex;
   flex-direction: column;
@@ -80,5 +43,44 @@
 
 .empty-state ion-label {
   font-size: 16px;
+}
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  text-align: center;
+  color: var(--ion-color-medium);
+}
+
+.loading-state ion-spinner {
+  margin-bottom: 16px;
+}
+
+.loading-state ion-label {
+  font-size: 16px;
+}
+
+ion-list {
+  padding: 0;
+}
+
+ion-item {
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --min-height: 48px;
+}
+
+ion-item h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+ion-item ion-icon[slot="end"] {
+  color: var(--ion-color-medium);
+  font-size: 20px;
 }
 

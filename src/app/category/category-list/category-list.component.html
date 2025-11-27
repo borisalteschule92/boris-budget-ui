@@ -1,1 +1,54 @@
-Category List
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Categories</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Filter/Sort Bar -->
+  <div class="filter-bar">
+    <ion-button fill="clear" class="filter-button" (click)="toggleSort()">
+      <ion-icon slot="start" name="swap-vertical" />
+      <span>{{ getSortLabel() }}</span>
+      <ion-icon slot="end" name="chevron-down" />
+    </ion-button>
+    <ion-searchbar
+      placeholder="Search"
+      class="search-bar"
+      [value]="searchTerm"
+      (ionInput)="onSearch($event)"
+      (ionClear)="onSearchClear()"
+    />
+  </div>
+
+  <!-- Category List -->
+  @if (isLoading) {
+    <div class="loading-state">
+      <ion-spinner name="crescent" />
+      <ion-label>Loading categories...</ion-label>
+    </div>
+  } @else if (hasCategories()) {
+    <ion-list>
+      @for (category of categories; track category.id) {
+        <ion-item button="true" (click)="openEditCategoryModal(category)">
+          <ion-label>
+            <h2>{{ category.name }}</h2>
+          </ion-label>
+          <ion-icon slot="end" name="chevron-forward" />
+        </ion-item>
+      }
+    </ion-list>
+  } @else {
+    <div class="empty-state">
+      <ion-icon name="alert-circle-outline" />
+      <ion-label>No categories found</ion-label>
+    </div>
+  }
+
+  <!-- FAB Button -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="openAddCategoryModal()">
+      <ion-icon name="add" />
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

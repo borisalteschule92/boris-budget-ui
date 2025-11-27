@@ -21,39 +21,46 @@
   </div>
 
   <!-- Expense List -->
-  <ion-list>
-    @for (group of getExpensesByDate(); track group.date) {
-      <ion-list-header>
-        <ion-label>{{ formatDate(group.date) }}</ion-label>
-      </ion-list-header>
-      @for (expense of group.expenses; track expense.id) {
-        <ion-item button="true" (click)="openEditExpenseModal(expense)">
-          <ion-label>
-            <h2>{{ expense.name }}</h2>
-          </ion-label>
-          @if (expense.category) {
-            <div slot="end" class="expense-end">
-              <ion-label class="category-label">
-                <ion-icon name="pricetag" />
-                <span>{{ expense.category.name }}</span>
-              </ion-label>
-              <ion-label class="amount-label">
-                {{ formatAmount(expense.amount) }}
-              </ion-label>
-              <ion-icon name="chevron-forward" />
-            </div>
-          } @else {
-            <div slot="end" class="expense-end">
-              <ion-label class="amount-label">
-                {{ formatAmount(expense.amount) }}
-              </ion-label>
-              <ion-icon name="chevron-forward" />
-            </div>
-          }
-        </ion-item>
+  @if (hasExpenses()) {
+    <ion-list>
+      @for (group of getExpensesByDate(); track group.date) {
+        <ion-list-header>
+          <ion-label>{{ formatDate(group.date) }}</ion-label>
+        </ion-list-header>
+        @for (expense of group.expenses; track expense.id) {
+          <ion-item button="true" (click)="openEditExpenseModal(expense)">
+            <ion-label>
+              <h2>{{ expense.name }}</h2>
+            </ion-label>
+            @if (expense.category) {
+              <div slot="end" class="expense-end">
+                <ion-label class="category-label">
+                  <ion-icon name="pricetag" />
+                  <span>{{ expense.category.name }}</span>
+                </ion-label>
+                <ion-label class="amount-label">
+                  {{ formatAmount(expense.amount) }}
+                </ion-label>
+                <ion-icon name="chevron-forward" />
+              </div>
+            } @else {
+              <div slot="end" class="expense-end">
+                <ion-label class="amount-label">
+                  {{ formatAmount(expense.amount) }}
+                </ion-label>
+                <ion-icon name="chevron-forward" />
+              </div>
+            }
+          </ion-item>
+        }
       }
-    }
-  </ion-list>
+    </ion-list>
+  } @else if (!isLoading) {
+    <div class="empty-state">
+      <ion-icon name="alert-circle-outline" />
+      <ion-label>No expenses for this month</ion-label>
+    </div>
+  }
 
   <!-- FAB Button -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">

@@ -61,7 +61,7 @@ export interface Expense {
   createdAt: string;
   lastModifiedAt: string;
   amount: number;
-  category: Category;
+  category?: Category;
   date: string;
   name: string;
 }
